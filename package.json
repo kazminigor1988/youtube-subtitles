@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kazminigor1988/youtube-sutitles#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "youtube-dl": "^1.12.2"
   }
 }

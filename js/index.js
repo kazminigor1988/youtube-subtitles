@@ -1,4 +1,4 @@
-const searchInput      = document.querySelector('name=["search"]');
+const searchInput      = document.querySelector('[name="search"]');
 const subtitlesSection = document.querySelector('.subtitle');
 
 let timer;
