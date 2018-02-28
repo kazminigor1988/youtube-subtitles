@@ -6,7 +6,7 @@ let timer;
 searchInput.addEventListener('change', () => {
     clearTimeout(timer);
 
-    timer = setInterval(tryGetAndShowSubtitles, 200);
+    timer = setTimeout(tryGetAndShowSubtitles, 200);
 });
 
 async function tryGetAndShowSubtitles() {
@@ -31,9 +31,9 @@ function getSubtitles(videoLink) {
             return response.json();
         })
         .then((subtitles) => {
-            alert(subtitles);
+            console.log(subtitles);
         })
-        .catch(alert);
+        .catch(console.log);
 }
 
 function showSubtitles(subtitles) {

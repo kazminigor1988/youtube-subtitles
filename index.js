@@ -17,12 +17,24 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './dist/index.html'));
 });
 
-app.get('/get', (req, res) => {
-    const videoUrl = req.param('video');
+app.get('/get', async (req, res) => {
+    const videoUrl = req.query.link;
+
+    const options = {
+        // Write automatic subtitle file (youtube only)
+        auto: false,
+        // Downloads all the available subtitles.
+        all: false,
+        // Languages of subtitles to download, separated by commas.
+        lang: 'en',
+        // The directory to save the downloaded files in.
+        cwd: __dirname,
+    };
 
     try {
-        const subs = getSubsAcyns(videoUrl);
-
+        console.log(videoUrl);
+        const subs = await getSubsAcyns(videoUrl, options);
+        console.log(subs, 'subs');
         res.send(subs);
     } catch (error) {
         console.log(error);
