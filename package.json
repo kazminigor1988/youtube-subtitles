@@ -1,0 +1,23 @@
+{
+  "name": "youtube-sutitles",
+  "version": "1.0.0",
+  "description": "Will be show English subtitles from youtube by video link.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazminigor1988/youtube-sutitles.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kazminigor1988/youtube-sutitles/issues"
+  },
+  "homepage": "https://github.com/kazminigor1988/youtube-sutitles#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
