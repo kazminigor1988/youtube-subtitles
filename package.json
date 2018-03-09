@@ -1,26 +1,27 @@
 {
-  "name":         "youtube-sutitles",
-  "version":      "1.0.0",
-  "description":  "Will be show English subtitles from youtube by video link.",
-  "main":         "index.js",
-  "scripts":      {
-    "dev":  "npx nodemon ./app-back/index.js localhost 3000",
+  "name": "youtube-sutitles",
+  "version": "1.0.0",
+  "description": "Will be show English subtitles from youtube by video link.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon ./app-back/index.js localhost 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository":   {
+  "repository": {
     "type": "git",
-    "url":  "git+https://github.com/kazminigor1988/youtube-sutitles.git"
+    "url": "git+https://github.com/kazminigor1988/youtube-sutitles.git"
   },
-  "keywords":     [],
-  "author":       "",
-  "license":      "ISC",
-  "bugs":         {
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
     "url": "https://github.com/kazminigor1988/youtube-sutitles/issues"
   },
-  "homepage":     "https://github.com/kazminigor1988/youtube-sutitles#readme",
+  "homepage": "https://github.com/kazminigor1988/youtube-sutitles#readme",
   "dependencies": {
-    "express":    "^4.16.2",
-    "nodemon":    "^1.17.1",
+    "config": "^1.30.0",
+    "express": "^4.16.2",
+    "nodemon": "^1.17.1",
     "youtube-dl": "^1.12.2"
   }
 }
