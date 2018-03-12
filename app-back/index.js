@@ -5,9 +5,12 @@ const config  = require('config');
 const app = express();
 
 const YoutubeVideoSubFileLoader = require('./services/YoutubeVideoSubFileLoader');
+const YoutubeVideoSubFileParser = require('./services/YoutubeVideoSubFileParser');
 
-const tmpPath                   = config.get('tmp_path');
+const tmpPath = config.get('tmp_path');
+
 const youtubeVideoSubFileLoader = new YoutubeVideoSubFileLoader(tmpPath);
+const youtubeVideoSubFileParser = new YoutubeVideoSubFileParser();
 
 // todo change way for web files
 app.get('/js/index.js', (req, res) => {
@@ -22,9 +25,10 @@ app.get('/get', async (req, res) => {
     try {
         const videoUrl = req.query.link;
 
-        const subFilePath = await youtubeVideoSubFileLoader.load(videoUrl);
+        const subFilePath   = await youtubeVideoSubFileLoader.load(videoUrl);
+        const parseSubtitle = await youtubeVideoSubFileParser.parse(subFilePath);
 
-        res.status(200).send(subFilePath);
+        res.status(200).send(parseSubtitle);
     } catch (error) {
         res.status(400).send(error);
     }

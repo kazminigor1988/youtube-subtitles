@@ -40,7 +40,7 @@ class YoutubeVideoSubFileLoader {
         }
 
         if (!fs.existsSync(subFilePath)) {
-            throw new Error('Subtitle file path is not exists');
+            throw new Error(`Subtitle file path is not exists: ${subFilePath}`);
         }
 
         return subFilePath;
