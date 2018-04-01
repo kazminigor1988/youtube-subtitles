@@ -20,14 +20,21 @@
   "homepage": "https://github.com/kazminigor1988/youtube-sutitles#readme",
   "dependencies": {
     "config": "^1.30.0",
+    "epic-spinners": "^1.0.3",
     "express": "^4.16.2",
     "nodemon": "^1.17.1",
     "vue": "^2.5.16",
+    "vue-hot-reload-api": "^2.3.0",
     "youtube-dl": "^1.12.2"
   },
   "devDependencies": {
+    "@vue/component-compiler-utils": "^1.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "parcel-bundler": "^1.6.2",
-    "parcel-plugin-vue": "^1.5.0"
+    "babel-runtime": "^6.26.0",
+    "less": "^3.0.1",
+    "parcel-bundler": "^1.7.0",
+    "pug": "^2.0.3",
+    "vue-template-compiler": "^2.5.16"
   }
 }

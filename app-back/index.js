@@ -12,10 +12,7 @@ const tmpPath = config.get('tmp_path');
 const youtubeVideoSubFileLoader = new YoutubeVideoSubFileLoader(tmpPath);
 const youtubeVideoSubFileParser = new YoutubeVideoSubFileParser();
 
-// todo change way for web files
-app.get('/js/index.js', (req, res) => {
-    res.sendFile(path.join(__dirname, '../js/index.js'));
-});
+app.use(express.static('dist'));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
@@ -30,6 +27,7 @@ app.get('/get', async (req, res) => {
 
         res.status(200).send(parseSubtitle);
     } catch (error) {
+        console.log(error);
         res.status(400).send(error);
     }
 });
