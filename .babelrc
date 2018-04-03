@@ -9,6 +9,17 @@
         "polyfill":    false,
         "regenerator": true
       }
+    ],
+    [
+      "module-resolver",
+      {
+        "root":  [
+          "./"
+        ],
+        "alias": {
+          "js": "./js"
+        }
+      }
     ]
   ]
 }

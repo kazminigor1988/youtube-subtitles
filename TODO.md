@@ -7,3 +7,4 @@
 7. Integrate eslint.
 8. Integrate prettier js.
 9. Update README
+10. Add CSP and check security

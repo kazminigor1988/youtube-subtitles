@@ -12,10 +12,16 @@
         .subtitles
             p(v-for="subtitle in subtitles")
                 span {{ subtitle }}
+        .video
+            youtube-video(
+            v-if="link",
+            :url="link"
+            )
 </template>
 
 <script>
     import { OrbitSpinner } from 'epic-spinners';
+    import YoutubeVideo from 'js/components/youtube-video/Component';
 
     export default {
         name: 'App',
@@ -29,7 +35,8 @@
         },
 
         components: {
-            OrbitSpinner
+            OrbitSpinner,
+            YoutubeVideo,
         },
 
         computed: {
