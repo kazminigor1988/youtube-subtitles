@@ -21,10 +21,10 @@ export default function loadScript(url, loadTimeout = LOAD_TIMEOUT) {
         link.defer = true;
         link.setAttribute("src", url);
 
-        document.body.script.appendChild(link);
+        document.head.appendChild(link);
 
         const rejectTimeout = setTimeout(() => {
-            document.body.script.removeChild(link);
+            document.head.removeChild(link);
 
             reject(new Error(`Can not load script with timeout ${loadTimeout}: ${link}`));
         }, loadTimeout);

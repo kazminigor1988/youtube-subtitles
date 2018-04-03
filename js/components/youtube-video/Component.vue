@@ -49,6 +49,10 @@
             url() {
                 // todo remove old listeners
                 this.showVideo();
+            },
+
+            isLoadApiScript() {
+                this.showVideo();
             }
         },
 
@@ -64,9 +68,7 @@
             },
 
             showVideo() {
-                if (this.isLoadApiScript) {
-                    alert('Try reload page');
-
+                if (!this.isLoadApiScript || !this.url) {
                     return;
                 }
 

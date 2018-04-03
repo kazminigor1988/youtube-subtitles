@@ -13,10 +13,7 @@
             p(v-for="subtitle in subtitles")
                 span {{ subtitle }}
         .video
-            youtube-video(
-            v-if="link",
-            :url="link"
-            )
+            youtube-video(:url="link")
 </template>
 
 <script>
