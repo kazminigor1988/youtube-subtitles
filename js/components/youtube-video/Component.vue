@@ -86,33 +86,3 @@
         }
     }
 </script>
-
-<style lang="less">
-    body {
-        margin: 0;
-    }
-
-    p {
-        margin: 0;
-        padding: 2px 50px 2px 50px;
-    }
-
-    .subtitle-link {
-        padding: 15px 0;
-        text-align: center;
-        font-size: 18px;
-        font-family: Arial;
-
-        input {
-            max-width: 500px;
-            width: 300px;
-        }
-    }
-
-    .spinner {
-        display: flex;
-        position: absolute;
-        top: 43%;
-        left: 48%;
-    }
-</style>
