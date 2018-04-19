@@ -23,8 +23,10 @@ app.get('/get', async (req, res) => {
         const videoUrl = req.query.link;
 
         const video         = await youtubeVideoSubFileLoader.load(videoUrl);
-        const parseSubtitle = await youtubeVideoSubFileParser.parse(video);
+        console.log(video);
 
+        const parseSubtitle = await youtubeVideoSubFileParser.parse(video);
+        console.log(parseSubtitle);
         res.status(200).send(parseSubtitle);
     } catch (error) {
         console.log(error);

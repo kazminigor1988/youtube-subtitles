@@ -4,7 +4,7 @@ const path          = require('path');
 const fs            = require('fs');
 const { promisify } = require('util');
 
-const type = {
+const TYPE = {
     AUTO   : 1,
     DEFAULT: 2
 };
@@ -31,16 +31,16 @@ class YoutubeVideoSubFileLoader {
      */
     async load(videoLink) {
         try {
-            let type = type.DEFAULT;
+            let type = TYPE.DEFAULT;
             let path = await this._tryLoadDefaultSub(videoLink);
 
             if (!path) {
-                type = type.AUTO;
+                type = TYPE.AUTO;
                 path = await this._tryLoadAutoSub(videoLink);
             }
 
             return {
-                path,
+                path: `${this._tmpPath}/${path}`,
                 type
             };
         } catch (error) {
@@ -90,5 +90,5 @@ class YoutubeVideoSubFileLoader {
 
 module.exports = {
     YoutubeVideoSubFileLoader,
-    type
+    TYPE
 };
