@@ -4,6 +4,11 @@ const path          = require('path');
 const fs            = require('fs');
 const { promisify } = require('util');
 
+const type = {
+    AUTO   : 1,
+    DEFAULT: 2
+};
+
 class YoutubeVideoSubFileLoader {
     /**
      * @param {string} tmpPath
@@ -15,12 +20,8 @@ class YoutubeVideoSubFileLoader {
         }
 
         this._loadSubFileAsync = promisify(youtube.getSubs);
-        this._loadOptions      = {
-            cwd:  tmpPath,
-            auto: false,
-            all:  false,
-            lang: 'en',
-        };
+        this._tmpPath          = tmpPath;
+        this._lang             = 'en';
     }
 
     /**
@@ -29,22 +30,65 @@ class YoutubeVideoSubFileLoader {
      * @throws {Error}
      */
     async load(videoLink) {
-        let subFilePath;
-
         try {
-            const [subFileName] = await this._loadSubFileAsync(videoLink, this._loadOptions);
+            let type = type.DEFAULT;
+            let path = await this._tryLoadDefaultSub(videoLink);
 
-            subFilePath = path.join(this._loadOptions.cwd, subFileName);
+            if (!path) {
+                type = type.AUTO;
+                path = await this._tryLoadAutoSub(videoLink);
+            }
+
+            return {
+                path,
+                type
+            };
         } catch (error) {
-            throw new Error('Can not load subtitle');
+            throw new Error(`Can not load subtitle: ${error.message}`);
         }
+    }
 
-        if (!fs.existsSync(subFilePath)) {
-            throw new Error(`Subtitle file path is not exists: ${subFilePath}`);
-        }
+    /**
+     * @param {string} videoLink
+     * @returns {string}
+     * @private
+     */
+    async _tryLoadAutoSub(videoLink) {
+        const options = this._createOptions({ auto: true });
 
-        return subFilePath;
+        const [fileName] = await this._loadSubFileAsync(videoLink, options);
+
+        return fileName;
+    }
+
+    /**
+     * @param auto
+     * @returns {{}}
+     * @private
+     */
+    _createOptions({ auto = false } = {}) {
+        return {
+            auto,
+            cwd : this._tmpPath,
+            lang: this._lang,
+        };
+    }
+
+    /**
+     * @param {string} videoLink
+     * @returns {string}
+     * @private
+     */
+    async _tryLoadDefaultSub(videoLink) {
+        const options = this._createOptions();
+
+        const [fileName] = await this._loadSubFileAsync(videoLink, options);
+
+        return fileName;
     }
 }
 
-module.exports = YoutubeVideoSubFileLoader;
+module.exports = {
+    YoutubeVideoSubFileLoader,
+    type
+};

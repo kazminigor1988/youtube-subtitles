@@ -2,6 +2,8 @@ const fs            = require('fs');
 const { promisify } = require('util');
 const { EOL }       = require('os');
 
+
+
 class YoutubeVideoSubFileParser {
     constructor() {
         this._readFileAsync = promisify(fs.readFile);
@@ -12,21 +14,25 @@ class YoutubeVideoSubFileParser {
      * @param {string} filePath
      * @return {{}}
      */
-    async parse(filePath) {
-        if (!fs.existsSync(filePath)) {
-            throw new Error(`Subtitle file path is not exists: ${filePath}`);
+    async parse({ path, type }) {
+        if (!fs.existsSync(path)) {
+            throw new Error(`Subtitle file path is not exists: ${path}`);
         }
 
-        const content = await this._readFileAsync(filePath, this._fileEncoding);
+        const content = await this._readFileAsync(path, this._fileEncoding);
 
-        return this._parseContent(content);
+        if (type.DEFAULT === type) {
+            return this._parseDefaultContent(content);
+        } else {
+            return this._parseAutoContent(content);
+        }
     }
 
     /**
      * @param {string} content
      * @private
      */
-    _parseContent(content) {
+    _parseDefaultContent(content) {
         const splittedContent            = content.split(EOL);
         const splittedContentWithoutHead = this.__removeHeadString(splittedContent);
 
@@ -72,6 +78,10 @@ class YoutubeVideoSubFileParser {
 
             return acc;
         }, {});
+    }
+
+    _parseAutoContent(content) {
+
     }
 }
 

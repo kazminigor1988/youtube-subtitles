@@ -4,12 +4,12 @@ const config  = require('config');
 
 const app = express();
 
-const YoutubeVideoSubFileLoader = require('./services/YoutubeVideoSubFileLoader');
-const YoutubeVideoSubFileParser = require('./services/YoutubeVideoSubFileParser');
+const { YoutubeVideoSubFileLoader } = require('./services/YoutubeVideoSubFileLoader');
+const YoutubeVideoSubFileParser     = require('./services/YoutubeVideoSubFileParser');
 
-const tmpPath = config.get('tmp_path');
+const TMP_PATH = config.get('tmp_path');
 
-const youtubeVideoSubFileLoader = new YoutubeVideoSubFileLoader(tmpPath);
+const youtubeVideoSubFileLoader = new YoutubeVideoSubFileLoader(TMP_PATH);
 const youtubeVideoSubFileParser = new YoutubeVideoSubFileParser();
 
 app.use(express.static('dist'));
@@ -22,8 +22,8 @@ app.get('/get', async (req, res) => {
     try {
         const videoUrl = req.query.link;
 
-        const subFilePath   = await youtubeVideoSubFileLoader.load(videoUrl);
-        const parseSubtitle = await youtubeVideoSubFileParser.parse(subFilePath);
+        const video         = await youtubeVideoSubFileLoader.load(videoUrl);
+        const parseSubtitle = await youtubeVideoSubFileParser.parse(video);
 
         res.status(200).send(parseSubtitle);
     } catch (error) {
