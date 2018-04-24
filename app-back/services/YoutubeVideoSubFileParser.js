@@ -17,7 +17,6 @@ class YoutubeVideoSubFileParser {
      * @throws {Error}
      */
     async parse({ path, type }) {
-        console.log('parse');
         if (!fs.existsSync(path)) {
             throw new Error(`Subtitle file path is not exists: ${path}`);
         }
@@ -80,20 +79,28 @@ class YoutubeVideoSubFileParser {
 
         let key;
 
-        return splittedContentWithoutHead.reduce((acc, string) => {
-            if (string.length === 0) {
+        const cleanedAndGroupedCode = splittedContentWithoutHead.reduce((acc, string) => {
+            if (string.trim().length === 0) {
                 return acc;
             }
 
             if (this._isTimeString(string)) {
                 key = string.slice(0, 29);
             } else {
-                const clearedString = string.replace(/<[\w./:]*>/gi, '');
-                acc[key]      = acc[key] ? `${acc[key]} ${clearedString}` : clearedString;
+                const clearedString = string.replace(/<[\w./:]*>/gi, '').replace('[Music]', '').trim();
+
+                if (clearedString.length === 0) {
+                    return;
+                }
+
+                acc[key] = acc[key] ? `${acc[key]} ${clearedString}` : clearedString;
             }
 
             return acc;
-        }, {})
+        }, {});
+
+
+        console.log(cleanedAndGroupedCode);
     }
 
     async test(acc, string) {
