@@ -9,6 +9,9 @@
 9. Update README
 10. Jump to webpack, because not stable watcher
 11. Youtube url should be validate
-12. Try found alternative source for subtitle
+12. show valid and user friendly error
 backlog. Add CSP and check security
 
+issues
+reinitialize youtube player if link is changed
+refactoring parse algorithm for auto subtitle

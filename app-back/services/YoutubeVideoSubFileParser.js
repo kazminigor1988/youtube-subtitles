@@ -2,6 +2,8 @@ const fs            = require('fs');
 const { promisify } = require('util');
 const { EOL }       = require('os');
 
+const { compact }  = require('lodash');
+
 const { TYPE } = require('./YoutubeVideoSubFileLoader');
 
 class YoutubeVideoSubFileParser {
@@ -78,6 +80,7 @@ class YoutubeVideoSubFileParser {
         const splittedContentWithoutHead = this._removeHeadString(splittedContent);
 
         let key;
+        let prevKey;
 
         const cleanedAndGroupedCode = splittedContentWithoutHead.reduce((acc, string) => {
             if (string.trim().length === 0) {
@@ -85,12 +88,13 @@ class YoutubeVideoSubFileParser {
             }
 
             if (this._isTimeString(string)) {
-                key = string.slice(0, 29);
+                prevKey = key ? key : undefined;
+                key     = string.slice(0, 29);
             } else {
                 const clearedString = string.replace(/<[\w./:]*>/gi, '').replace('[Music]', '').trim();
 
                 if (clearedString.length === 0) {
-                    return;
+                    return acc;
                 }
 
                 acc[key] = acc[key] ? `${acc[key]} ${clearedString}` : clearedString;
@@ -100,11 +104,36 @@ class YoutubeVideoSubFileParser {
         }, {});
 
 
-        console.log(cleanedAndGroupedCode);
-    }
+        const cleanedAndGroupedCodeAsArray = Object.entries(cleanedAndGroupedCode);
 
-    async test(acc, string) {
+        cleanedAndGroupedCodeAsArray.forEach((currentElement, index, data) => {
+            if (!currentElement) {
+                return;
+            }
 
+            const [key, string] = currentElement;
+
+            const nextElement = data[index + 1];
+
+            if (!nextElement) {
+                return;
+            }
+
+            const [nextElementKey, nextElementString] = nextElement;
+
+            if (nextElementString === string) {
+                data[index+1][0]  = key.slice(0, 17) + nextElementKey.slice(17);
+                data[index] = undefined;
+            } else if (nextElementString.includes(string)) {
+                nextElement[1] = nextElementString.replace(string, '').trim();
+            }
+        });
+
+        return compact(cleanedAndGroupedCodeAsArray).reduce((acc, [key, value]) => {
+            acc[key] = value;
+
+            return acc;
+        }, {});
     }
 }
 
