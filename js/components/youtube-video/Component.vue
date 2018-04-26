@@ -6,7 +6,11 @@
 <script>
     import loadScript from 'js/lib/loadScript';
 
-    const YOUTUBE_API_URL = 'https://www.youtube.com/iframe_api';
+    const YOUTUBE_API_URL                      = 'https://www.youtube.com/iframe_api';
+    const UPDATE_CURRENT_TIME_INTERVAL_TIMEOUT = 50;
+    const PLAYER_HEIGHT                        = 390;
+    const PLAYER_WIDTH                         = 640;
+    const PLAYER_ID                            = 'youtube-player';
 
     export default {
         loadScript,
@@ -22,8 +26,10 @@
 
         data() {
             return {
-                isLoadApiScript: false,
-                player:          undefined,
+                isLoadApiScript:           false,
+                player:                    undefined,
+                updateCurrentTimeInterval: undefined,
+                currentTime:               0,
             };
         },
 
@@ -46,14 +52,8 @@
         },
 
         watch: {
-            url() {
-                // todo remove old listeners
-                this.showVideo();
-            },
-
-            isLoadApiScript() {
-                this.showVideo();
-            }
+            url:             'showVideoPlayer',
+            isLoadApiScript: 'showVideoPlayer',
         },
 
         methods: {
@@ -67,26 +67,50 @@
                 }
             },
 
-            showVideo() {
-                if (!this.isLoadApiScript || !this.url) {
+            showVideoPlayer() {
+                if (!this.isLoadApiScript || !this.videoId) {
                     return;
                 }
 
+                this.clearUpdateCurrentTimeInterval();
+                this.destroyPlayer();
+                this.currentTime = 0;
+
+                this.initPlayer();
+                this.setUpdateCurrentTimeInterval();
+            },
+
+            clearUpdateCurrentTimeInterval() {
+                clearInterval(this.updateCurrentTimeInterval);
+            },
+
+            setUpdateCurrentTimeInterval() {
+                this.updateCurrentTimeInterval = setInterval(() => {
+                    this.currentTime = this.player.getCurrentTime();
+                }, UPDATE_CURRENT_TIME_INTERVAL_TIMEOUT);
+            },
+
+            destroyPlayer() {
                 if (this.player) {
                     this.player.destroy();
                 }
+            },
 
-                this.player = new YT.Player('youtube-player', {
-                    height:  '390',
-                    width:   '640',
+            initPlayer() {
+                this.player = new YT.Player(PLAYER_ID, {
+                    height:  PLAYER_HEIGHT,
+                    width:   PLAYER_WIDTH,
                     videoId: this.videoId,
                 });
-                // todo add listeners
             }
         },
 
         mounted() {
             this.loadYoutubeApiScript();
+        },
+
+        beforeDestroy() {
+            this.clearUpdateCurrentTimeInterval();
         }
     }
 </script>
