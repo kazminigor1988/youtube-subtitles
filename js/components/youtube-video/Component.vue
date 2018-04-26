@@ -72,6 +72,10 @@
                     return;
                 }
 
+                if (this.player) {
+                    this.player.destroy();
+                }
+
                 this.player = new YT.Player('youtube-player', {
                     height:  '390',
                     width:   '640',

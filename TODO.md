@@ -13,5 +13,5 @@
 backlog. Add CSP and check security
 
 issues
-reinitialize youtube player if link is changed
+reinitialize youtube player if link is changed *done*
 refactoring parse algorithm for auto subtitle
