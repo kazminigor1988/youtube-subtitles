@@ -86,7 +86,9 @@
 
             setUpdateCurrentTimeInterval() {
                 this.updateCurrentTimeInterval = setInterval(() => {
-                    this.currentTime = this.player.getCurrentTime();
+                    if (this.player.getCurrentTime) {
+                        this.currentTime = this.player.getCurrentTime();
+                    }
                 }, UPDATE_CURRENT_TIME_INTERVAL_TIMEOUT);
             },
 
