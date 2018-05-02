@@ -1,15 +1,18 @@
 <template lang="pug">
     div
         spinner(v-if="isLoading")
-        p(v-for="text in subtitles") {{ text }}
+        p(v-for="{ text } in subtitles") {{ text }}
 </template>
 
 <script>
     import Spinner from 'js/components/spinner/Component';
+    import SubtitleParser from './services/SubtitleParser';
 
     const ERROR_MESSAGE = 'Can not load subtitles';
 
     export default {
+        subtitleParser: new SubtitleParser(),
+
         name: 'Subtitles',
 
         props: {
@@ -62,7 +65,9 @@
 
                     const response = await fetch(this.subtitleLink);
 
-                    this.subtitles = await response.json();
+                    const subtitles = await response.json();
+
+                    this.subtitles = this.$options.subtitleParser.parse(subtitles);
                 } catch (error) {
                     this.errorMessage = ERROR_MESSAGE;
                 } finally {
