@@ -18,9 +18,13 @@
         name: 'YoutubeVideo',
 
         props: {
-            url: {
+            url:      {
                 required: false,
                 type:     String,
+            },
+            eventBus: {
+                required: true,
+                type:     Object,
             }
         },
 
@@ -54,6 +58,9 @@
         watch: {
             url:             'showVideoPlayer',
             isLoadApiScript: 'showVideoPlayer',
+            currentTime(currentTime) {
+                this.eventBus.$emit('video:current:time:updated', currentTime);
+            }
         },
 
         methods: {

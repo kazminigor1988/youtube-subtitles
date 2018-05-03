@@ -16,17 +16,22 @@
         name: 'Subtitles',
 
         props: {
-            link: {
+            link:     {
                 required: false,
-                type    : String
+                type:     String
+            },
+            eventBus: {
+                required: true,
+                type:     Object,
             }
         },
 
         data() {
             return {
-                isLoading   : false,
-                subtitles   : [],
-                errorMessage: false,
+                isLoading:        false,
+                subtitles:        [],
+                errorMessage:     false,
+                videoCurrentTime: 0,
             };
         },
 
@@ -45,7 +50,9 @@
 
         watch: {
             link(link) {
-                if (!link) return;
+                if (!link) {
+                    return;
+                }
 
                 this.loadSubtitles();
             }
@@ -74,6 +81,13 @@
                     this.isLoading = false;
                 }
             },
+        },
+
+        created() {
+            this.eventBus.$on(
+                'video:current:time:updated',
+                videoCurrentTime => this.videoCurrentTime = videoCurrentTime
+            );
         }
     }
 </script>

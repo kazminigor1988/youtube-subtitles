@@ -4,11 +4,12 @@
             label Youtube link:
             input(v-model="link")
         .content
-            subtitles.subtitles(:link="link")
-            youtube-video.video(:url="link")
+            subtitles.subtitles(:link="link", :eventBus="eventBus")
+            youtube-video.video(:url="link", :eventBus="eventBus")
 </template>
 
 <script>
+    import Vue from 'vue';
     import YoutubeVideo from 'js/components/youtube-video/Component';
     import Subtitles from 'js/components/subtitles/Component';
 
@@ -17,7 +18,8 @@
 
         data() {
             return {
-                link: '',
+                link:     '',
+                eventBus: new Vue()
             };
         },
 
