@@ -1,3 +1,5 @@
+import WATCH_TYPE from '../WATCH_TYPE';
+
 const FIRST_POSITION_FROM = 0;
 const LAST_POSITION_FROM  = 12;
 
@@ -20,8 +22,9 @@ export default class SubtitleParser {
 
             acc.push({
                 text,
-                from: this._parseTime(from),
-                to  : this._parseTime(to),
+                from     : this._parseTime(from),
+                to       : this._parseTime(to),
+                watchType: WATCH_TYPE.NOT_WATCHED,
             });
 
             return acc;

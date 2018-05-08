@@ -1,36 +1,47 @@
 <template lang="pug">
     div
         spinner(v-if="isLoading")
-        p(v-for="{ text } in subtitles") {{ text }}
+        template(v-for="{ text, watchType } in marked")
+            p(:class="$options.watchTypeClassMap[watchType]") {{ text }}
 </template>
 
 <script>
     import Spinner from 'js/components/spinner/Component';
     import SubtitleParser from './services/SubtitleParser';
+    import SubtitleWatchTypeMarker from './services/SubtitleWatchTypeMarker';
+    import WATCH_TYPE from './WATCH_TYPE';
 
     const ERROR_MESSAGE = 'Can not load subtitles';
 
+    const watchTypeClassMap = {
+        [WATCH_TYPE.NOT_WATCHED]: 'not-watched',
+        [WATCH_TYPE.WATCHING]   : 'watching',
+        [WATCH_TYPE.WATCHED]    : 'watched',
+    };
+
     export default {
-        subtitleParser: new SubtitleParser(),
+        watchTypeClassMap,
+        subtitleParser         : new SubtitleParser(),
+        subtitleWatchTypeMarker: new SubtitleWatchTypeMarker(),
 
         name: 'Subtitles',
 
         props: {
-            link:     {
+            link    : {
                 required: false,
-                type:     String
+                type    : String
             },
             eventBus: {
                 required: true,
-                type:     Object,
+                type    : Object,
             }
         },
 
         data() {
             return {
-                isLoading:        false,
-                subtitles:        [],
-                errorMessage:     false,
+                isLoading       : false,
+                subtitles       : [],
+                errorMessage    : false,
                 videoCurrentTime: 0,
             };
         },
@@ -45,6 +56,13 @@
              */
             subtitleLink() {
                 return `/get?link=${this.link}`;
+            },
+
+            /**
+             * @returns {[]}
+             */
+            marked() {
+                return this.$options.subtitleWatchTypeMarker.mark(this.subtitles, this.videoCurrentTime);
             }
         },
 
@@ -91,3 +109,17 @@
         }
     }
 </script>
+
+<style lang="less">
+    .not-watched {
+        
+    }
+
+    .watching {
+        font-weight: bold;
+    }
+
+    .watched {
+        font-style: italic;
+    }
+</style>
