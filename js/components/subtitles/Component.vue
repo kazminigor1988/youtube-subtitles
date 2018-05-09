@@ -9,6 +9,7 @@
     import Spinner from 'js/components/spinner/Component';
     import SubtitleParser from './services/SubtitleParser';
     import SubtitleWatchTypeMarker from './services/SubtitleWatchTypeMarker';
+    import ScrollToWatchingSubtitle from './services/ScrollToWatchingSubtitle';
     import WATCH_TYPE from './WATCH_TYPE';
 
     const ERROR_MESSAGE = 'Can not load subtitles';
@@ -39,10 +40,11 @@
 
         data() {
             return {
-                isLoading       : false,
-                subtitles       : [],
-                errorMessage    : false,
-                videoCurrentTime: 0,
+                scrollToWatchingSubtitle: undefined,
+                isLoading               : false,
+                subtitles               : [],
+                errorMessage            : false,
+                videoCurrentTime        : 0,
             };
         },
 
@@ -82,6 +84,8 @@
                     return;
                 }
 
+                this.scrollToWatchingSubtitle.stop();
+
                 this.subtitles    = [];
                 this.errorMessage = '';
 
@@ -93,6 +97,8 @@
                     const subtitles = await response.json();
 
                     this.subtitles = this.$options.subtitleParser.parse(subtitles);
+
+                    this.scrollToWatchingSubtitle.start();
                 } catch (error) {
                     this.errorMessage = ERROR_MESSAGE;
                 } finally {
@@ -106,13 +112,23 @@
                 'video:current:time:updated',
                 videoCurrentTime => this.videoCurrentTime = videoCurrentTime
             );
+        },
+
+        mounted() {
+            this.scrollToWatchingSubtitle = new ScrollToWatchingSubtitle(
+                this.$el, this.$options.watchTypeClassMap[WATCH_TYPE.WATCHING]
+            );
+        },
+
+        beforeDestroy() {
+            this.scrollToWatchingSubtitle.stop();
         }
     }
 </script>
 
 <style lang="less">
     .not-watched {
-        
+        opacity: .5;
     }
 
     .watching {

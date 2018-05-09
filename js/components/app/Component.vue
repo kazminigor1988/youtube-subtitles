@@ -60,6 +60,7 @@
         }
 
         .subtitles {
+            position: relative;
             max-height: 390px;
             overflow: hidden;
             overflow-y: auto;
