@@ -8,15 +8,18 @@ export default class ScrollToWatchingSubtitle {
             throw new TypeError('watchingBlockClass should be a not empty string');
         }
 
-        this._parentEl                 = parentElement;
-        this._pxToMiddleParentEl       = this._parentEl.clientHeight / 2;
-        this._watchingBlockClass       = watchingBlockClass;
+        this._parentEl           = parentElement;
+        this._watchingBlockClass = watchingBlockClass;
+
+        this._pxToMiddleParentEl       = undefined;
         this._tryScrollInterval        = undefined;
-        this._tryScrollIntervalTimeout = 1000;
+        this._tryScrollIntervalTimeout = 300;
     }
 
     start() {
         this._tryScrollInterval = setInterval(() => this._tryScroll(), this._tryScrollIntervalTimeout);
+
+        this._pxToMiddleParentEl = this._parentEl.clientHeight / 2;
     }
 
     stop() {
@@ -27,12 +30,17 @@ export default class ScrollToWatchingSubtitle {
         const watchingEl      = this._parentEl.querySelector(`.${this._watchingBlockClass}`);
         const parentScrollTop = this._parentEl.scrollTop;
 
-        if (watchingEl && watchingEl.offsetTop - this._pxToMiddleParentEl > parentScrollTop) {
-            console.log(watchingEl.offsetTop);
+        if (!watchingEl) {
+            return;
+        }
 
+        const watchingElAboveParentElement = watchingEl.offsetTop - this._pxToMiddleParentEl > parentScrollTop;
+        const watchingElBelowParentElement = parentScrollTop > watchingEl.offsetTop + this._pxToMiddleParentEl;
+
+        if (watchingElAboveParentElement || watchingElBelowParentElement) {
             const scrollY = watchingEl.offsetTop - this._pxToMiddleParentEl;
-            console.log(scrollY);
-            this._parentEl.scrollBy(0, scrollY);
+
+            this._parentEl.scrollTo(0, scrollY);
         }
     }
 }
