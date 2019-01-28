@@ -1,5 +1,7 @@
 import Vue from 'vue';
-import App from 'js/components/app/Component';
+import App from 'components/app';
+
+Vue.config.productionTip = false
 
 const instance = new Vue({
     el    : '#app',

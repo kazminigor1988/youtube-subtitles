@@ -1,3 +1,7 @@
+// TODO need refactoring, we should have a method, that will be scroll to top of parent element
+// handling when we should scroll - should be happened in user code
+// firstly, current code broken principe of Single Responsibility
+// secondary, that help avoid redundant scrolling when video is stopped
 export default class ScrollToWatchingSubtitle {
     constructor(parentElement, watchingBlockClass) {
         if (!(parentElement instanceof HTMLElement)) {
@@ -9,13 +13,13 @@ export default class ScrollToWatchingSubtitle {
         }
 
         this._parentEl                 = parentElement;
-        this._pxToMiddleParentEl       = this._parentEl.clientHeight / 2;
         this._watchingBlockClass       = watchingBlockClass;
         this._tryScrollInterval        = undefined;
         this._tryScrollIntervalTimeout = 1000;
     }
 
     start() {
+        this._pxToMiddleParentEl       = this._parentEl.clientHeight / 2;
         this._tryScrollInterval = setInterval(() => this._tryScroll(), this._tryScrollIntervalTimeout);
     }
 
@@ -27,12 +31,10 @@ export default class ScrollToWatchingSubtitle {
         const watchingEl      = this._parentEl.querySelector(`.${this._watchingBlockClass}`);
         const parentScrollTop = this._parentEl.scrollTop;
 
-        if (watchingEl && watchingEl.offsetTop - this._pxToMiddleParentEl > parentScrollTop) {
-            console.log(watchingEl.offsetTop);
-
+        if (watchingEl && (watchingEl.offsetTop - this._pxToMiddleParentEl > parentScrollTop)) {
             const scrollY = watchingEl.offsetTop - this._pxToMiddleParentEl;
-            console.log(scrollY);
-            this._parentEl.scrollBy(0, scrollY);
+
+            this._parentEl.scrollTo(0, scrollY);
         }
     }
 }

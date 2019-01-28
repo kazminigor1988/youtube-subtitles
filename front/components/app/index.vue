@@ -1,8 +1,11 @@
 <template lang="pug">
     section
         .subtitle-link
-            label Youtube link:
-            input(v-model="link")
+            label(for="link") Youtube link:
+            input(
+            id="link",
+            v-model="link"
+            )
         .content
             subtitles.subtitles(:link="link", :eventBus="eventBus")
             youtube-video.video(:url="link", :eventBus="eventBus")
@@ -10,15 +13,20 @@
 
 <script>
     import Vue from 'vue';
-    import YoutubeVideo from 'js/components/youtube-video/Component';
-    import Subtitles from 'js/components/subtitles/Component';
+    import YoutubeVideo from 'components/youtube-video';
+    import Subtitles from 'components/subtitles';
 
     export default {
         name: 'App',
-
+        // if we talk about application - need add youtube-video-with-subtitles component wrapper (as a page)
+        // and that I could add new functionality for another useful things with navigation panel
         data() {
             return {
+                // TODO take out input for link to component
+                // add validation to link
                 link:     '',
+                // TODO remove event bus, think how we can make communication between subtitle and video component
+                // try do that without eventBus and without store
                 eventBus: new Vue()
             };
         },

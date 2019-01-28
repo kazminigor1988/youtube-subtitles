@@ -4,7 +4,7 @@
 </template>
 
 <script>
-    import loadScript from 'js/lib/loadScript';
+    import loadScript from 'lib/loadScript';
 
     const YOUTUBE_API_URL                      = 'https://www.youtube.com/iframe_api';
     const UPDATE_CURRENT_TIME_INTERVAL_TIMEOUT = 50;

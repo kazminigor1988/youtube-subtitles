@@ -1,6 +1,7 @@
 const express = require('express');
 const path    = require('path');
 const config  = require('config');
+const compression = require('compression');
 
 const app = express();
 
@@ -12,6 +13,9 @@ const TMP_PATH = config.get('tmp_path');
 const youtubeVideoSubFileLoader = new YoutubeVideoSubFileLoader(TMP_PATH);
 const youtubeVideoSubFileParser = new YoutubeVideoSubFileParser();
 
+app.use(compression({
+    level: 9
+}));
 app.use(express.static('dist'));
 
 app.get('/', (req, res) => {

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Spinner from 'js/components/spinner/Component';
+    import Spinner from 'components/spinner';
     import SubtitleParser from './services/SubtitleParser';
     import SubtitleWatchTypeMarker from './services/SubtitleWatchTypeMarker';
     import ScrollToWatchingSubtitle from './services/ScrollToWatchingSubtitle';
